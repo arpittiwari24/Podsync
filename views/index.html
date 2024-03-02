@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            background-color: #000 !important;
+            color: #fff !important;
+        }
+    </style>
+    <title>Podsync</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10" ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="bg-black bg-grid">
+       <nav
+  class="relative flex w-full flex-wrap items-center justify-between py-2 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700  lg:py-4">
+  <div class="flex w-full flex-wrap items-center justify-between px-3">
+    <div>
+      <a
+        class="mx-2 my-1 flex items-center text-2xl font-bold lg:mb-0 lg:mt-0"
+        href="#">
+        Podsync
+      </a>
+    </div>
+    <div>
+    </div>
+  </div>
+</nav>
+<hr>
+  <div id="search-result-container">
+    {{ range $index, $result := .SearchResults }}
+      <div class="search-result" hx-swap="outerHtml">
+        <a href="https://www.youtube.com/watch?v={{ $result.VideoId }}" target="_blank">
+          <img src="{{ $result.Thumbnail }}" alt="{{ $result.Title }}">
+          <p>{{ $result.Title }}</p>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+
+    </div>
+</body>
+</html>

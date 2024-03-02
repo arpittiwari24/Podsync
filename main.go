@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
@@ -14,6 +17,18 @@ func main() {
 	fmt.Println("Jai Shree ram !!")
 	getSpotify()
 	getYoutube()
+	engine := html.New("./views", ".html")
+	app := fiber.New(fiber.Config{Views: engine})
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("index", fiber.Map{})
+	})
+
+	app.Get("/youtube-data", func(c *fiber.Ctx) error {
+		return c.SendString("Youtube")
+	})
+
+	log.Fatal(app.Listen(":4002"))
 }
 
 func getSpotify() {
@@ -42,11 +57,18 @@ func getYoutube() {
 	if err != nil {
 		fmt.Println("Error creating youtube service")
 	}
-	fmt.Println(youtubeService)
-	data , err := youtubeService.Search.List([]string{"golang"}).Q("golang").Do()
+
+	data , err := youtubeService.Search.List([]string{"snippet"}).Q("golang").Do()
 
 	if err != nil {
 		fmt.Println("Error fetching data")
 	}
-	fmt.Println(data)
+	// marshal,err := data.MarshalJSON()
+
+	// if err != nil {
+	// 	fmt.Println("error")
+	// }
+	
+	object := data.Items[0]
+	fmt.Println(object.Snippet.Title)
 }
