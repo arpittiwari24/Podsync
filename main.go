@@ -13,38 +13,32 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
+type Youtube struct {
+	VideoId string
+	ThumbnailUrl string
+	Title string
+	PublishedAt string
+}
+
 func main() {
-	fmt.Println("Jai Shree ram !!")
 	getSpotify()
+	fmt.Println("Jai Shree ram !!")
 	getYoutube()
 	engine := html.New("./views", ".html")
 	app := fiber.New(fiber.Config{Views: engine})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("index", fiber.Map{})
-	})
-
-	app.Get("/youtube-data", func(c *fiber.Ctx) error {
-		return c.SendString("Youtube")
+		data, err := getYoutube()
+		if err != nil {
+			return c.SendString("Error fetching data")
+		}
+		return c.Render("index", fiber.Map{ "data": data })
 	})
 
 	log.Fatal(app.Listen(":4002"))
 }
 
-func getSpotify() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Error loading .env file")
-	// }
-
-	// clientId := os.Getenv("SPOTIFY_CLIENT_ID")
-	// clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
-
-	// client := spotify.NewClient(client *http.Client) client 
-
-}
-
-func getYoutube() {
+func getYoutube() ([]Youtube, error) {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file")
@@ -58,17 +52,35 @@ func getYoutube() {
 		fmt.Println("Error creating youtube service")
 	}
 
-	data , err := youtubeService.Search.List([]string{"snippet"}).Q("golang").Do()
+	data, err := youtubeService.Search.List([]string{"snippet"}).Q("Latest Podcasts").Do()
 
 	if err != nil {
 		fmt.Println("Error fetching data")
 	}
-	// marshal,err := data.MarshalJSON()
+	var videos []Youtube
 
+	for _, item := range data.Items {
+		video := Youtube{
+			VideoId:      item.Id.VideoId,
+			ThumbnailUrl: item.Snippet.Thumbnails.Default.Url,
+			Title:        item.Snippet.Title,
+			PublishedAt:  item.Snippet.PublishedAt,
+		}
+		videos = append(videos, video)
+	}
+
+	return videos, nil
+}
+
+func getSpotify() {
+	// err := godotenv.Load()
 	// if err != nil {
-	// 	fmt.Println("error")
+	// 	fmt.Println("Error loading .env file")
 	// }
-	
-	object := data.Items[0]
-	fmt.Println(object.Snippet.Title)
+
+	// clientId := os.Getenv("SPOTIFY_CLIENT_ID")
+	// clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
+
+	// client := spotify.NewClient(client *http.Client) client 
+
 }

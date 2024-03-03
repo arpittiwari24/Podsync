@@ -30,17 +30,20 @@
   </div>
 </nav>
 <hr>
-  <div id="search-result-container">
-    {{ range $index, $result := .SearchResults }}
-      <div class="search-result" hx-swap="outerHtml">
-        <a href="https://www.youtube.com/watch?v={{ $result.VideoId }}" target="_blank">
-          <img src="{{ $result.Thumbnail }}" alt="{{ $result.Title }}">
-          <p>{{ $result.Title }}</p>
-        </a>
-      </div>
-    {{ end }}
-  </div>
-
+ <ul>
+    {{range .data}}
+        <li>
+            <button
+                class=""
+                hx-get="/"
+                hx-trigger="intersect once"
+                hx-target="#data">
+                <img src={{.ThumbnailUrl}} alt="">
+                <a href="https://youtube.com/watch?v={{.VideoId}}">{{.Title}}</a>
+            </button>
+        </li>
+    {{end}}
+</ul>
     </div>
 </body>
 </html>
