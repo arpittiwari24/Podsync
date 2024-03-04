@@ -52,7 +52,7 @@ func getYoutube() ([]Youtube, error) {
 		fmt.Println("Error creating youtube service")
 	}
 
-	data, err := youtubeService.Search.List([]string{"snippet"}).Q("Latest Podcasts").Do()
+	data, err := youtubeService.Search.List([]string{"snippet"}).MaxResults(100).Q("todays podcasts").Do()
 
 	if err != nil {
 		fmt.Println("Error fetching data")

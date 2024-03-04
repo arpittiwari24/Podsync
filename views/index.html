@@ -14,36 +14,45 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="bg-black bg-grid">
+    <div class="">
        <nav
   class="relative flex w-full flex-wrap items-center justify-between py-2 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700  lg:py-4">
   <div class="flex w-full flex-wrap items-center justify-between px-3">
     <div>
-      <a
-        class="mx-2 my-1 flex items-center text-2xl font-bold lg:mb-0 lg:mt-0"
-        href="#">
+      <p
+        class="mx-2 my-1 flex items-center text-2xl font-bold lg:mb-0 lg:mt-0">
         Podsync
-      </a>
+    </p>
     </div>
     <div>
     </div>
   </div>
 </nav>
 <hr>
- <ul>
+ 
     {{range .data}}
-        <li>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-6">
+     <div class="bg-white rounded-lg overflow-hidden shadow-md cursor-pointer">
+       <img
+         src={{.ThumbnailUrl}}
+         alt="Blog Cover"
+         class="w-full h-48 object-cover object-center"
+       />
+       <div class="p-4">
+         <a href="https://youtube.com/watch?v={{.VideoId}}" class="text-black text-xl font-bold mb-2">{{.Title}}</a>
+       </div>
+        <!-- <li class="bg-white rounded-lg overflow-hidden shadow-md cursor-pointer">
             <button
                 class=""
                 hx-get="/"
                 hx-trigger="intersect once"
                 hx-target="#data">
-                <img src={{.ThumbnailUrl}} alt="">
-                <a href="https://youtube.com/watch?v={{.VideoId}}">{{.Title}}</a>
+                
+                <a ></a>
             </button>
-        </li>
+        </li> -->
     {{end}}
-</ul>
+    </div>
     </div>
 </body>
 </html>
