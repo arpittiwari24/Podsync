@@ -1,13 +1,11 @@
-package main
+package api
 
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
@@ -20,22 +18,14 @@ type Youtube struct {
 	PublishedAt string
 }
 
- func Main() {
-	getSpotify()
-	fmt.Println("Jai Shree ram !!")
-	getYoutube()
-	engine := html.New("./views", ".html")
-	app := fiber.New(fiber.Config{Views: engine})
+func Handler (c *fiber.Ctx) error {
+	data , err := getYoutube()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		data, err := getYoutube()
-		if err != nil {
-			return c.SendString("Error fetching data")
-		}
-		return c.Render("index", fiber.Map{ "data": data })
-	})
+	if err != nil {
+		return c.SendString("Error fetching podcasts")
+	}
 
-	log.Fatal(app.Listen(":4002"))
+	return c.Render("index", fiber.Map{ "data": data })
 }
 
 func getYoutube() ([]Youtube, error) {
