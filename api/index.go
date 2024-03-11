@@ -20,7 +20,7 @@ type Youtube struct {
 	PublishedAt string
 }
 
-func main() {
+ func Main() {
 	getSpotify()
 	fmt.Println("Jai Shree ram !!")
 	getYoutube()
