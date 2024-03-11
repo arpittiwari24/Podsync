@@ -18,7 +18,7 @@ type Youtube struct {
 	PublishedAt string
 }
 
-func Handler (c *fiber.Ctx) error {
+func Handler(c *fiber.Ctx) error {
 	data , err := getYoutube()
 
 	if err != nil {
@@ -42,7 +42,7 @@ func getYoutube() ([]Youtube, error) {
 		fmt.Println("Error creating youtube service")
 	}
 
-	data, err := youtubeService.Search.List([]string{"snippet"}).MaxResults(100).Q("todays podcasts").Do()
+	data, err := youtubeService.Search.List([]string{"snippet"}).MaxResults(50).Q("Trending Podcasts").Do()
 
 	if err != nil {
 		fmt.Println("Error fetching data")
@@ -62,15 +62,15 @@ func getYoutube() ([]Youtube, error) {
 	return videos, nil
 }
 
-func getSpotify() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Error loading .env file")
-	// }
+// func getSpotify() {
+// 	// err := godotenv.Load()
+// 	// if err != nil {
+// 	// 	fmt.Println("Error loading .env file")
+// 	// }
 
-	// clientId := os.Getenv("SPOTIFY_CLIENT_ID")
-	// clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
+// 	// clientId := os.Getenv("SPOTIFY_CLIENT_ID")
+// 	// clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
 
-	// client := spotify.NewClient(client *http.Client) client 
+// 	// client := spotify.NewClient(client *http.Client) client 
 
-}
+// }

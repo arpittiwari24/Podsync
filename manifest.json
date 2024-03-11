@@ -1,0 +1,15 @@
+{
+  "name": "Podsync",
+  "short_name": "Podsync",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#000",
+  "icons": [
+    {
+      "src": "",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
